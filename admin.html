@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubham Tech | Website Editor</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0d0c;color:#f5f7f5}
+.wrap{max-width:1200px;margin:auto;padding:30px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.logo{font-size:24px;font-weight:800}.badge{padding:8px 13px;border:1px solid #39413b;border-radius:30px;color:#b8ff65}
+.grid{display:grid;grid-template-columns:260px 1fr;gap:20px}.nav,.panel{background:#131715;border:1px solid #29302b;border-radius:22px;padding:20px}
+.nav button{display:block;width:100%;margin:7px 0;padding:13px;border:0;border-radius:12px;background:#1b201d;color:#fff;text-align:left;cursor:pointer}
+.nav button.active,.nav button:hover{background:#b8ff65;color:#10130f}
+h1{font-size:32px;margin-top:0}h2{font-size:19px}.section{display:none}.section.active{display:block}
+label{display:block;font-weight:700;margin:18px 0 7px}input,textarea{width:100%;background:#0d100e;color:#fff;border:1px solid #343b36;border-radius:11px;padding:13px;font:inherit}textarea{min-height:120px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}.save{margin-top:20px;padding:14px 22px;border:0;border-radius:12px;background:#b8ff65;color:#111;font-weight:800;cursor:pointer}.note{color:#9fa9a1;font-size:14px;line-height:1.6}
+.danger{background:#251615;color:#ffaaa3}.status{margin-left:12px;color:#b8ff65}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="logo">Shubham Tech <span style="font-weight:400">Admin</span></div><div class="badge">Website Editor</div></div>
+<div class="grid">
+<aside class="nav">
+<button class="active" data-tab="company">Company</button>
+<button data-tab="home">Home Page</button>
+<button data-tab="about">About Us</button>
+<button data-tab="services">Services</button>
+<button data-tab="solutions">Solutions</button>
+<button data-tab="equipment">Equipment</button>
+<button data-tab="contact">Contact</button>
+<button data-tab="seo">SEO & Social</button><button data-tab="backup">Backup & Restore</button>
+</aside>
+<main class="panel">
+<div id="company" class="section active">
+<h1>Company Details</h1><p class="note">यहाँ company की basic information बदलें। Save करने के बाद यह information browser में save होगी.</p>
+<label>Company Name</label><input id="companyName">
+<div class="row"><div><label>Phone</label><input id="phone"></div><div><label>Email</label><input id="email"></div></div>
+<label>Short Tagline</label><input id="tagline">
+<button class="save" onclick="saveData()">Save Changes</button><span id="status1" class="status"></span>
+</div>
+
+<div id="home" class="section"><h1>Home Page</h1>
+<label>Hero Heading</label><input id="heroHeading">
+<label>Hero Description</label><textarea id="heroDesc"></textarea>
+<label>Primary Button Text</label><input id="heroButton">
+<label>Home Introduction</label><textarea id="homeIntro"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="about" class="section"><h1>About Us</h1>
+<label>About Heading</label><input id="aboutHeading">
+<label>About Description</label><textarea id="aboutDesc"></textarea>
+<label>Company Experience / Highlight</label><input id="aboutHighlight">
+<label>Mission</label><textarea id="mission"></textarea>
+<label>Vision</label><textarea id="vision"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="services" class="section"><h1>Services</h1>
+<p class="note">नीचे services की पूरी list comma-separated format में edit कर सकते हैं। बाद में individual service editor भी जोड़ा जा सकता है।</p>
+<label>Services</label><textarea id="servicesList"></textarea>
+<label>Services Intro</label><textarea id="servicesIntro"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="solutions" class="section"><h1>Toll Solutions</h1>
+<label>Solutions List</label><textarea id="solutionsList"></textarea>
+<label>Solutions Description</label><textarea id="solutionsDesc"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="equipment" class="section"><h1>Equipment</h1>
+<label>Equipment List — one item per line</label><textarea id="equipmentList" style="min-height:360px"></textarea>
+<label>Equipment Section Description</label><textarea id="equipmentDesc"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="contact" class="section"><h1>Contact</h1>
+<label>Address</label><textarea id="address"></textarea>
+<div class="row"><div><label>Phone</label><input id="contactPhone"></div><div><label>Email</label><input id="contactEmail"></div></div>
+<label>WhatsApp Number (with country code)</label><input id="whatsapp">
+<label>Contact Page Message</label><textarea id="contactMessage"></textarea>
+<button class="save" onclick="saveData()">Save Changes</button></div>
+
+<div id="seo" class="section"><h1>SEO & Social</h1>
+<label>Website Title</label><input id="siteTitle">
+<label>Meta Description</label><textarea id="metaDescription"></textarea>
+<div class="row"><div><label>Facebook URL</label><input id="facebook"></div><div><label>LinkedIn URL</label><input id="linkedin"></div></div>
+<label>Instagram URL</label><input id="instagram">
+<button class="save" onclick="saveData()">Save Changes</button></div>
+<div id="backup" class="section"><h1>Backup & Restore</h1><p class="note">अपने सारे website edits का backup JSON file में रखें। दूसरे computer पर Import करके वही content restore कर सकते हैं.</p><button class="save" onclick="exportData()">Export Website Data</button><label>Import Website Data</label><input type="file" accept="application/json" onchange="importData(this.files[0])"><button class="save danger" onclick="resetData()">Reset to Default</button></div></main>
+</div>
+</div>
+<script src="site-data.js"></script><script src="admin.js"></script>
+</body></html>
